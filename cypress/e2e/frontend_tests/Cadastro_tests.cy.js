@@ -10,6 +10,12 @@ describe('Teste de Cadastro', () => {
   it('Cadastro com falha', () => {
     CadastroActions.visitCadastroPage();
     CadastroActions.cadastroComFalha();
+
+    //Como a p[agina nao tem validaçao de erro, valida se ainda esta na pagina de cadastro
+    cy.url().should('eq', 'https://front.serverest.dev/cadastrarusuarios');
+    
+  });
+  
   });
 
   it('Cadastro com sucesso', () => {
@@ -20,5 +26,14 @@ describe('Teste de Cadastro', () => {
     cy.log('Usuário cadastrado com sucesso');
     cy.log('Email: ' + email);
     cy.log('Senha: ' + password);
+
+
+// Valida se a mensagem de sucesso está presente na página
+cy.get('.alert-link')
+.should('be.visible')
+.and(($el) => {
+  expect($el.text()).to.equal('Cadastro realizado com sucesso');
+
   });
 });
+

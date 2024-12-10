@@ -25,6 +25,10 @@ describe('Teste de Login e Pesquisa', () => {
  
     // Pesquisa por produto existente e valida o resultado esperado
     PesquisaActions.pesquisa('generic');
+
+
+    // esse elemento so aparece quando tem algo na pesquisa 
+    cy.get('section.row.espacamento div.card').should('exist');
   });
 
   it('pesquisa por título de produto inexistente', () => {
@@ -38,5 +42,10 @@ describe('Teste de Login e Pesquisa', () => {
    
     // Pesquisa por produto inexistente e valida a mensagem de erro
     PesquisaActions.pesquisa('Playstation 66');
+
+
+
+    // Verifica que não existe uma estrutura ou elemento específico
+    cy.get('section.row.espacamento div.nonexistent-class').should('not.exist');
   });
 });
