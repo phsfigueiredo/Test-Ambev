@@ -1,32 +1,49 @@
+// CadastroActions.js
 import CadastroPage from '../pages/CadastroPage.js';
 import { faker } from '@faker-js/faker';
 
 class CadastroActions {
-  constructor() {
-    this.cadastroPage = new CadastroPage();
+  visitCadastroPage() {
+    CadastroPage.visit();
   }
 
-  visitCadastroPage() {
-    this.cadastroPage.visit();
+  fillName(name) {
+    cy.get(CadastroPage.nameInput).clear().type(name);
+  }
+
+  fillEmail(email) {
+    cy.get(CadastroPage.emailInput).clear().type(email);
+  }
+
+  fillPassword(password) {
+    cy.get(CadastroPage.passwordInput).clear().type(password);
+  }
+
+  submit() {
+    cy.get(CadastroPage.submitButton).click();
+  }
+
+  cadastro(name, email, password, confirmPassword) {
+    this.fillName(name);
+    this.fillEmail(email);
+    this.fillPassword(password);
+    if (confirmPassword) {
+      cy.get(CadastroPage.passwordInput).clear().type(confirmPassword);
+    }
+    this.submit();
   }
 
   cadastroComFalha() {
     const name = faker.name.firstName();
     const password = faker.internet.password();
-
-    // Intencionalmente fornece dados inválidos para falha
-    this.cadastroPage.cadastro(name, password, password, 'differentPassword');
+    this.cadastro(name, password, password, 'differentPassword');
   }
 
   cadastroComSucesso() {
     const name = faker.name.firstName();
     const email = faker.internet.email();
     const password = faker.internet.password();
-
-    // Fornece dados válidos para sucesso
-    this.cadastroPage.cadastro(name, email, password, password);
-    
-    // Retorna os dados gerados
+    this.cadastro(name, email, password, password);
     return { email, password };
   }
 }

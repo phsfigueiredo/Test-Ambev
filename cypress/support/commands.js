@@ -1,17 +1,5 @@
 import { faker } from '@faker-js/faker';
-
-
-
-
-
-
-
-  
-
-
-/////////////////////////////////// Backend ///////////////////////////
-
-
+//comando de login back-end Suceeso (com dados validos)
 Cypress.Commands.add('login', (usuario, senha) => {
   cy.request({
     method: 'POST',
@@ -23,6 +11,7 @@ Cypress.Commands.add('login', (usuario, senha) => {
   });
 });
 
+//comando de login back-end falha (com dados invalidos)
 Cypress.Commands.add('loginfailed', (usuario, senha) => {
   cy.request({
     method: 'POST',
@@ -35,7 +24,7 @@ Cypress.Commands.add('loginfailed', (usuario, senha) => {
   });
 });
 
-
+// comando que faz login e gera token 
 Cypress.Commands.add('token', () => {
   cy.request({
     method: 'POST',
@@ -52,7 +41,7 @@ Cypress.Commands.add('token', () => {
 });
 
 
-
+//comando de cadastro back-end(com dados validos)
 Cypress.Commands.add('cadastroUsuariovalido', () => {
   const login = faker.internet.email();
   const nome = faker.name.firstName();
@@ -73,6 +62,8 @@ Cypress.Commands.add('cadastroUsuariovalido', () => {
   });
 });
 
+
+//comando de cadastro back-end(com dados invalidos)
 Cypress.Commands.add('cadastroUsuariofalha', () => {
   const login = faker.internet.email();
   const password = faker.internet.password();
@@ -92,6 +83,7 @@ Cypress.Commands.add('cadastroUsuariofalha', () => {
   });
 });
 
+//comando de busca de usuário com id no back-end
 Cypress.Commands.add('getUsuario', (id) => {
   return cy.request({
     method: 'GET',
@@ -102,6 +94,8 @@ Cypress.Commands.add('getUsuario', (id) => {
   });
 });
 
+
+//comando de exclusão de usuário com id no back-end
 Cypress.Commands.add('deletarUsuario', (id) => {
   return cy.request({
     method: 'DELETE',
@@ -111,6 +105,8 @@ Cypress.Commands.add('deletarUsuario', (id) => {
     return response;
   });
 });
+
+//comando de busca de todos os usuários no back-end
 Cypress.Commands.add('getUsuarios', () => {
   return cy.request({
     method: 'GET',

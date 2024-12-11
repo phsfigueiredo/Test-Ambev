@@ -1,12 +1,9 @@
-import LoginActions from '../actions/LoginActions.js';
+
+import LoginActions from '../actions/LoginActions';
+import CadastroActions from '../actions/CadastroActions.js';
 import PesquisaActions from '../actions/PesquisaActions.js';
 
 describe('Teste de Login e Pesquisa', () => {
-  beforeEach(() => {
-    // Limpa cookies e armazenamento local antes de cada teste
-    cy.clearCookies();
-    cy.clearLocalStorage();
-  });
 
   afterEach(() => {
     // Limpa cookies e armazenamento local após cada teste
@@ -15,35 +12,38 @@ describe('Teste de Login e Pesquisa', () => {
   });
 
   it('pesquisa por título de produto existente', () => {
-    // Realiza o login
-    LoginActions.visitLoginPage();
-    LoginActions.login('Marcelle_Will65@gmail.com', 'mvKdTY72ae9c8gT');
+  // faz um cadastro valido para gerar massa
+  CadastroActions.visitCadastroPage();
+  const { email, password } = CadastroActions.cadastroComSucesso(); // Captura os dados gerados
 
-    // Verifica se a URL correta foi carregada após o login
-    cy.url().should('eq', 'https://front.serverest.dev/home');
+  // Logando as informações
+  LoginActions.visitLoginPage();
+  // credenciais de login com sucesso
+  LoginActions.login(email, password);
+   // Verifica se a URL correta foi carregada após o login
+   cy.url().should('eq', 'https://front.serverest.dev/home');
 
- 
-    // Pesquisa por produto existente e valida o resultado esperado
-    PesquisaActions.pesquisa('generic');
+   // Pesquisa por produto inexistente e valida a mensagem de erro
+   PesquisaActions.pesquisa('notebook1733870198124');
 
-
-    // esse elemento so aparece quando tem algo na pesquisa 
+    // esse elemento só aparece quando tem algo na pesquisa 
     cy.get('section.row.espacamento div.card').should('exist');
   });
 
   it('pesquisa por título de produto inexistente', () => {
-    // Realiza o login
-    LoginActions.visitLoginPage();
-    LoginActions.login('Marcelle_Will65@gmail.com', 'mvKdTY72ae9c8gT');
+   // faz um cadastro valido para gerar massa
+   CadastroActions.visitCadastroPage();
+   const { email, password } = CadastroActions.cadastroComSucesso(); // Captura os dados gerados
 
+   // Logando as informações
+   LoginActions.visitLoginPage();
+   // credenciais de login com sucesso
+   LoginActions.login(email, password);
     // Verifica se a URL correta foi carregada após o login
     cy.url().should('eq', 'https://front.serverest.dev/home');
 
-   
     // Pesquisa por produto inexistente e valida a mensagem de erro
     PesquisaActions.pesquisa('Playstation 66');
-
-
 
     // Verifica que não existe uma estrutura ou elemento específico
     cy.get('section.row.espacamento div.nonexistent-class').should('not.exist');
